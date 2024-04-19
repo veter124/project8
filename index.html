@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<title>Project 8-Treeview menu using JSON</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    #menu {
+        float: left;
+        width: 20%;
+        text-align: center;
+    }
+
+    #menu a {
+        background-color: #e5e5e5;
+        padding: 8px;
+        margin-top: 7px;
+        display: block;
+        width: 20%;
+    }
+
+    .exercise-content {
+        float: left;
+        width: 50%;
+        padding: 0 20px;
+        display: none;
+    }
+    
+    #container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #flip-container {
+        width: 30%; 
+    }
+
+    #flip {
+        padding: 15px;
+        text-align: center;
+        background-color: #cce8ee;
+        width: 30%;
+        float: right;
+        min-width: 300px; 
+    }
+
+    .right {
+        background-color: #e5e5e5;
+        width: 30%; 
+        padding: 15px;
+        text-align: center;
+        background-color: lightblue;
+        float: right; 
+    }
+
+    #projectframe {
+        width: 70%;
+        height: 400px; 
+        display: block;
+    }
+
+    #treeview-menu {
+        width: 20%; 
+        float: left; 
+    }
+
+    #treeview-menu ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #treeview-menu li {
+        padding: 8px;
+        background-color: #f0f0f0; 
+        margin-bottom: 5px; 
+        border-radius: 3px; 
+    }
+
+    #treeview-menu a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        padding: 5px;
+        border-radius: 3px;
+        transition: background-color 0.3s ease;
+    }
+
+    #treeview-menu a:hover {
+        background-color: #dd4d4d; 
+    }
+
+    .highlighted-header {
+        background-color: yellow; 
+    }
+
+    #treeview-menu .menu-links {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#treeview-menu .menu-links a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+#treeview-menu .menu-links a:hover {
+    background-color: #e0e0e0;
+}
+</style>
+</head>
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            
+            $("h1").hover(function(){
+                
+                $(this).addClass("highlighted-header");
+            }, function(){
+                
+                $(this).removeClass("highlighted-header");
+            });
+        });
+    </script>
+
+<script>
+    $(document).ready(function(){
+      $("h1").mouseup(function(){
+        alert("click the title!");
+      });
+    });
+    </script>
+
+<div style="background-color:#f1f1f1;padding:15px;text-align:center;">
+    <h1>Project 8-Treeview menu using JSON</h1>
+</div>
+
+<div id="treeview-menu">
+    <div class="menu-links">
+        <a href="#" id="expand-all">Expand All</a>|<a href="#" id="close-all">Close All</a>
+    </div>
+</div>
+
+<div id="projectframecontainer" class="exercise-content">
+    <iframe id="projectframe"></iframe>
+</div>
+
+<div id="container">
+    <div id="flip">Click to slide the panel down or up</div>
+</div>
+
+<div class="right">
+    <p>Responsive Webpage built by Sanghwan Ryu 317374. When clicking the content on the left side named as project, the outcome will be printed in the middle in the page between the index exercise and description for windows. The page will adjust to the format in which is given by me for the phone in its most optimum format.</p>
+</div>
+
+<script>
+$(document).ready(function(){
+    var menu = [
+        { name: "Projects(slide up and down when clicked)", children: [
+            { name: "Project 1", url: "project1.htm" },
+            { name: "Project 2", url: "project2.htm" },
+            { name: "Project 3", url: "project3.htm" }
+        ]}
+    ];
+
+    function generateTreeViewMenu(data, parentElement) {
+        var menu = $("<ul>");
+        data.forEach(function(item) {
+            var menuItem = $("<li>").appendTo(menu);
+            var menuLink = $("<a>").text(item.name).attr("href", "#").appendTo(menuItem);
+            if (item.children) {
+                var childrenMenu = generateTreeViewMenu(item.children, $("<ul>").appendTo(menuItem));
+                menuLink.click(function(event) {
+                    event.preventDefault(); 
+                    childrenMenu.slideToggle(); 
+                });
+            }
+            menuItem.on("click", function() {
+                if (item.url) {
+                    displayProject(item.url);
+                }
+            });
+        });
+        menu.appendTo(parentElement);
+        return menu; 
+    }
+
+    generateTreeViewMenu(menu, $("#treeview-menu"));
+
+    function displayProject(projectURL) {
+        var projectFrameContainer = $("#projectframecontainer");
+        projectFrameContainer.show();
+
+        $.get(projectURL, function(response) {
+            $("#projectframe").attr("srcdoc", response);
+        });
+    }
+
+    $("#flip").click(function(){
+        $(".right").slideToggle("slow");
+    });
+
+
+    $("#expand-all").click(function(event) {
+        event.preventDefault();
+        $("#treeview-menu ul ul").slideDown();
+    });
+
+   
+    $("#close-all").click(function(event) {
+        event.preventDefault();
+        $("#treeview-menu ul ul").slideUp();
+    });
+});
+</script>
+
+</body>
+</html>

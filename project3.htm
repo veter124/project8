@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Results</title>
+
+
+    <h1>Project 3 - Sorting Arrays</h1>
+
+    <h2>Original Array:</h2>
+    <p id="originalArray"></p>
+    
+    <h2>Merge Sort:</h2>
+    <p id="mergeSortResult"></p>
+    <p id="mergeSortTime"></p>
+    
+    <h2>Selection Sort:</h2>
+    <p id="selectionSortResult"></p>
+    <p id="selectionSortTime"></p>
+
+    <script>
+        var randomArray = [];
+        for (let i = 0, j = 100; i < j; i++) {
+            let randomNumber = Math.round(Math.random() * 100);
+            if (!randomArray.includes(randomNumber)) {
+                randomArray.push(randomNumber);
+            }
+        }
+
+        document.getElementById('originalArray').textContent = "Original Array: " + randomArray.join(', ');
+
+        function mergeSort(arr) {
+            if (arr.length <= 1) {
+                return arr;
+            }
+            const middle = Math.floor(arr.length / 2);
+            const left = arr.slice(0, middle);
+            const right = arr.slice(middle);
+            return merge(mergeSort(left), mergeSort(right));
+        }
+
+        function merge(left, right) {
+            let result = [];
+            let leftIndex = 0;
+            let rightIndex = 0;
+            while (leftIndex < left.length && rightIndex < right.length) {
+                if (left[leftIndex] < right[rightIndex]) {
+                    result.push(left[leftIndex]);
+                    leftIndex++;
+                } else {
+                    result.push(right[rightIndex]);
+                    rightIndex++;
+                }
+            }
+            return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+        }
+
+        function selectionSort(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                if (minIndex !== i) {
+                    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+                }
+            }
+            return arr;
+        }
+
+        const mergeSortStartTime = performance.now();
+        let mergeSortedArray = mergeSort([...randomArray]);
+        const mergeSortEndTime = performance.now();
+        document.getElementById('mergeSortResult').textContent = "Merge Sort Result: " + mergeSortedArray.join(', ');
+        document.getElementById('mergeSortTime').textContent = "Merge Sort Time: " + (mergeSortEndTime - mergeSortStartTime) + " ms";
+
+        const selectionSortStartTime = performance.now();
+        let selectionSortedArray = selectionSort([...randomArray]);
+        const selectionSortEndTime = performance.now();
+        document.getElementById('selectionSortResult').textContent = "Selection Sort Result: " + selectionSortedArray.join(', ');
+        document.getElementById('selectionSortTime').textContent = "Selection Sort Time: " + (selectionSortEndTime - selectionSortStartTime) + " ms";
+    </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Fade out the entire HTML content
+        $("html").fadeOut(3000, function() {
+            // After fade out is complete, fade it back in
+            $(this).fadeIn(3000);
+        });
+    });
+</script>
+
+</html>
+    
+    
+     
+     
+     
+     
+     
+

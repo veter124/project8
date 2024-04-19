@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 1 - HTML Table</title>
+<style>
+    table, td, th {
+        border: 1px solid black;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#hide").click(function() {
+        $("#myTable").hide();
+    });
+
+    $("#show").click(function() {
+        $("#myTable").show();
+    });
+
+    $("#submit").click(function() {
+        let name = $("#name").val();
+        let surname = $("#surname").val();
+        let age = $("#age").val();
+        let sex = $("input[name='sex']:checked").val() || 'Not specified';
+        let hobbies = $("input[name='hobby[]']:checked").map(function() {
+            return this.value;
+        }).get().join(", ");
+        let popup = `Name: ${name}\nSurname: ${surname}\nAge: ${age}\nSex: ${sex}\nHobbies: ${hobbies}`;
+        alert(popup);
+    });
+});
+</script>
+</head>
+<body>
+
+<div id="exercise1" class="exercise-content">
+    <h2>Project 1 - HTML Table</h2>
+    <button id="hide">Hide</button>
+    <button id="show">Show</button>
+    <table id="myTable">
+        <tr>
+            <th>First Name</th>
+            <td><input type="text" name="name" id="name"></td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td><input type="text" name="surname" id="surname"></td>
+        </tr>
+        <tr>
+            <th>Age</th>
+            <td>
+                <select name="age" id="age">
+                    <option value="">Select</option>
+                    <option value="0-10">0-10</option>
+                    <option value="11-20">11-20</option>
+                    <option value="21-30">21-30</option>
+                    <option value="31-40">31-40</option>
+                    <option value="41-50">41-50</option>
+                    <option value="50+">50+</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Sex</th>
+            <td>
+                <input type="radio" name="sex" value="male" id="male"> Male
+                <input type="radio" name="sex" value="female" id="female"> Female
+            </td>
+        </tr>
+        <tr>
+            <th>Hobby</th>
+            <td>
+                <input type="checkbox" name="hobby[]" value="programming" id="programming"> Programming
+                <input type="checkbox" name="hobby[]" value="sports" id="sports"> Sports
+                <input type="checkbox" name="hobby[]" value="cooking" id="cooking"> Cooking
+                <input type="checkbox" name="hobby[]" value="reading" id="reading"> Reading
+                <input type="checkbox" name="hobby[]" value="other" id="other"> Other
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button id="submit">OK</button>
+                <button type="button" onclick="cancelFunction()">Cancel</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
